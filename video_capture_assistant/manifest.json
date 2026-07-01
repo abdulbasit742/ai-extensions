@@ -1,0 +1,24 @@
+{
+  "manifest_version": 3,
+  "name": "ARIA Video Capture Assistant",
+  "version": "1.3.1",
+  "description": "Rights-safe ARIA video pipeline helper: detect direct user-owned videos, save/import them, and prepare social drafts.",
+  "permissions": ["storage", "activeTab", "tabs", "scripting", "clipboardWrite"],
+  "host_permissions": [
+    "http://127.0.0.1/*",
+    "http://localhost/*",
+    "http://*/*",
+    "https://*/*"
+  ],
+  "action": {
+    "default_title": "ARIA Video Capture",
+    "default_popup": "popup.html"
+  },
+  "content_scripts": [
+    {
+      "matches": ["http://*/*", "https://*/*"],
+      "js": ["config.js", "content.js"],
+      "run_at": "document_idle"
+    }
+  ]
+}

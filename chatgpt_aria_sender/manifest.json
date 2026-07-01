@@ -1,0 +1,28 @@
+{
+  "manifest_version": 3,
+  "name": "ARIA ChatGPT Auto Sender",
+  "version": "1.3.7",
+  "description": "Professional ARIA automation panel for ChatGPT with tab-isolated counters, background/offscreen wake, response-aware numbered/custom sending, image saving, and coding-tool handoff.",
+  "permissions": ["storage", "activeTab", "tabs", "alarms", "offscreen", "clipboardRead", "clipboardWrite"],
+  "action": {
+    "default_title": "ARIA ChatGPT Sender",
+    "default_popup": "popup.html"
+  },
+  "host_permissions": [
+    "https://chatgpt.com/*",
+    "https://chat.openai.com/*",
+    "http://127.0.0.1/*",
+    "http://localhost/*",
+    "http://*/*"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://chatgpt.com/*", "https://chat.openai.com/*"],
+      "js": ["config.js", "content.js"],
+      "run_at": "document_idle"
+    }
+  ]
+}

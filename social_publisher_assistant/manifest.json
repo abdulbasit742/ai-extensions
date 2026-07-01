@@ -1,0 +1,40 @@
+{
+  "manifest_version": 3,
+  "name": "ARIA Social Publisher Assistant",
+  "version": "1.4.7",
+  "description": "ARIA social super assistant for Facebook, Instagram, LinkedIn, and X: captions, CSV tracking, media upload, post drafts, and safe engagement helpers.",
+  "permissions": ["storage", "activeTab", "tabs", "scripting", "clipboardRead", "clipboardWrite"],
+  "host_permissions": [
+    "https://www.facebook.com/*",
+    "https://facebook.com/*",
+    "https://www.instagram.com/*",
+    "https://instagram.com/*",
+    "https://www.linkedin.com/*",
+    "https://linkedin.com/*",
+    "https://x.com/*",
+    "https://twitter.com/*",
+    "http://127.0.0.1/*",
+    "http://localhost/*",
+    "http://*/*"
+  ],
+  "action": {
+    "default_title": "ARIA Social Publisher",
+    "default_popup": "popup.html"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "https://www.facebook.com/*",
+        "https://facebook.com/*",
+        "https://www.instagram.com/*",
+        "https://instagram.com/*",
+        "https://www.linkedin.com/*",
+        "https://linkedin.com/*",
+        "https://x.com/*",
+        "https://twitter.com/*"
+      ],
+      "js": ["config.js", "content.js"],
+      "run_at": "document_idle"
+    }
+  ]
+}

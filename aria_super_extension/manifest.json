@@ -1,0 +1,55 @@
+{
+  "manifest_version": 3,
+  "name": "ARIA Nexus One Hub",
+  "version": "4.28.1",
+  "description": "One reloadable ARIA Nexus Hub with v4.28.1 Pulse Post safe-draft merge, Send Number Lock, strict accepted-send verification for ClickUp and Google AI Studio, plus Word/Drive capture, vault ZIPs, social drafts, and coding-agent bridges.",
+  "permissions": [
+    "storage",
+    "tabs",
+    "activeTab",
+    "scripting",
+    "alarms",
+    "offscreen",
+    "downloads",
+    "contextMenus",
+    "tabGroups",
+    "clipboardRead",
+    "clipboardWrite",
+    "unlimitedStorage",
+    "debugger"
+  ],
+  "host_permissions": [
+    "http://*/*",
+    "https://*/*",
+    "file://*/*",
+    "https://api.groq.com/*",
+    "https://api.openai.com/*",
+    "https://openrouter.ai/*"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "icons": {
+    "16": "icons/aria-16.png",
+    "32": "icons/aria-32.png",
+    "48": "icons/aria-48.png",
+    "128": "icons/aria-128.png"
+  },
+  "content_scripts": [
+    {
+      "matches": ["http://*/*", "https://*/*", "file://*/*"],
+      "js": ["content.js"],
+      "run_at": "document_idle"
+    }
+  ],
+  "action": {
+    "default_title": "ARIA Nexus One Hub",
+    "default_popup": "popup.html",
+    "default_icon": {
+      "16": "icons/aria-16.png",
+      "32": "icons/aria-32.png",
+      "48": "icons/aria-48.png",
+      "128": "icons/aria-128.png"
+    }
+  }
+}

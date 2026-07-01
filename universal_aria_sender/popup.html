@@ -1,0 +1,91 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>ARIA Universal Sender</title>
+  <style>
+    body {
+      margin: 0;
+      width: 340px;
+      font: 13px/1.45 system-ui, -apple-system, Segoe UI, sans-serif;
+      color: #172019;
+      background: #fffaf0;
+    }
+    main { padding: 14px; }
+    h1 { margin: 0 0 10px; font-size: 17px; }
+    label { display: block; margin-top: 9px; font-weight: 700; }
+    input, select {
+      width: 100%;
+      box-sizing: border-box;
+      margin-top: 4px;
+      padding: 8px 9px;
+      border: 1px solid #d8d1c4;
+      border-radius: 8px;
+      font: inherit;
+      background: #fffef8;
+      color: #172019;
+    }
+    .row { display: flex; gap: 8px; }
+    .row > * { flex: 1; }
+    button {
+      border: 0;
+      border-radius: 8px;
+      padding: 9px 10px;
+      font: inherit;
+      font-weight: 800;
+      cursor: pointer;
+      background: #197744;
+      color: white;
+    }
+    button.secondary { background: #ed8b45; color: #172019; }
+    button.ghost { background: #fff8ec; color: #172019; border: 1px solid #d8d1c4; }
+    button.warn { background: #c6533c; }
+    .actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+    .status {
+      margin-top: 12px;
+      padding: 10px;
+      min-height: 72px;
+      white-space: pre-wrap;
+      border: 1px solid #e3dacb;
+      border-radius: 8px;
+      background: #fffef8;
+    }
+    .hint { margin-top: 8px; color: #6b6358; font-size: 12px; }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>ARIA Universal Sender</h1>
+    <label>Server URL</label>
+    <input id="server" value="http://127.0.0.1:5050" />
+
+    <div class="row">
+      <label>Seconds
+        <input id="seconds" type="number" min="1" value="5" />
+      </label>
+      <label>Method
+        <select id="mode">
+          <option value="auto">Auto</option>
+          <option value="button">Button</option>
+          <option value="enter">Enter</option>
+        </select>
+      </label>
+    </div>
+
+    <label>Text to send</label>
+    <input id="text" value="{n}" />
+    <div class="hint">Use {n} for 1, 2, 3... per page/chat. Use "." for dots.</div>
+
+    <div class="actions">
+      <button id="start">Run This Tab</button>
+      <button id="stop" class="warn">Stop</button>
+      <button id="status" class="ghost">Status</button>
+      <button id="reset" class="secondary">Reset #</button>
+      <button id="dashboard" class="ghost">Dashboard</button>
+    </div>
+
+    <div id="out" class="status">Ready.</div>
+  </main>
+  <script src="popup.js"></script>
+</body>
+</html>

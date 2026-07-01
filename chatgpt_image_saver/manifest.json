@@ -1,0 +1,26 @@
+{
+  "manifest_version": 3,
+  "name": "ARIA ChatGPT Image Saver",
+  "version": "1.0.0",
+  "description": "Create image prompts in ChatGPT and auto-save generated images to Downloads/Basit Social Media without any local server.",
+  "permissions": ["storage", "downloads", "activeTab", "tabs"],
+  "host_permissions": [
+    "https://chatgpt.com/*",
+    "https://chat.openai.com/*",
+    "https://*/*"
+  ],
+  "action": {
+    "default_title": "ARIA Image Saver",
+    "default_popup": "popup.html"
+  },
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://chatgpt.com/*", "https://chat.openai.com/*"],
+      "js": ["content.js"],
+      "run_at": "document_idle"
+    }
+  ]
+}

@@ -1,0 +1,25 @@
+{
+  "manifest_version": 3,
+  "name": "ARIA TikTok Upload Assistant",
+  "version": "1.0.1",
+  "description": "Safe TikTok upload helper: queue video guidance, caption fill, and manual final post confirmation.",
+  "permissions": ["storage", "clipboardWrite"],
+  "host_permissions": [
+    "https://www.tiktok.com/*",
+    "https://tiktok.com/*",
+    "http://127.0.0.1:5050/*",
+    "http://localhost:5050/*",
+    "http://*/*"
+  ],
+  "action": {
+    "default_title": "ARIA TikTok Uploader",
+    "default_popup": "popup.html"
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://www.tiktok.com/*", "https://tiktok.com/*"],
+      "js": ["config.js", "content.js"],
+      "run_at": "document_idle"
+    }
+  ]
+}

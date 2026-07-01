@@ -1,0 +1,45 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>ARIA Image Saver</title>
+  <style>
+    body { width: 340px; margin: 0; padding: 14px; background: #f8f3e8; color: #1f2a1f; font: 14px/1.4 system-ui, -apple-system, Segoe UI, sans-serif; }
+    h1 { font-size: 18px; margin: 0 0 8px; }
+    p { margin: 0 0 10px; color: #6b665c; }
+    label { display: block; font-weight: 700; margin-top: 10px; }
+    input, textarea { width: 100%; box-sizing: border-box; margin-top: 5px; padding: 10px; border: 1px solid #ddd3c3; border-radius: 8px; background: #fffdf7; font: inherit; }
+    textarea { min-height: 86px; resize: vertical; }
+    .row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 10px; }
+    button { border: 0; border-radius: 8px; padding: 10px; font-weight: 800; cursor: pointer; background: #15803d; color: white; }
+    button.secondary { background: #4f46e5; }
+    button.warn { background: #ea580c; }
+    .status { margin-top: 12px; padding: 10px; border: 1px solid #e7dcc9; background: #fffaf0; border-radius: 8px; white-space: pre-wrap; min-height: 42px; }
+  </style>
+</head>
+<body>
+  <h1>ARIA ChatGPT Image Saver</h1>
+  <p>Server ke bina chalega. Images browser Downloads ke andar save hongi.</p>
+
+  <label>Image prompt</label>
+  <textarea id="prompt" placeholder="e.g. futuristic laptop workspace for social media post"></textarea>
+
+  <label>Downloads subfolder</label>
+  <input id="folder" value="Basit Social Media" />
+
+  <label>Filename prefix</label>
+  <input id="prefix" value="chatgpt_image" />
+
+  <div class="row">
+    <button id="generate">Generate</button>
+    <button id="save" class="secondary">Save visible</button>
+  </div>
+  <div class="row">
+    <button id="panel" class="secondary">Show panel</button>
+    <button id="downloads" class="warn">Open Downloads</button>
+  </div>
+
+  <div id="status" class="status">Ready.</div>
+  <script src="popup.js"></script>
+</body>
+</html>

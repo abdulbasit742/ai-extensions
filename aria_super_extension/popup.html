@@ -1,0 +1,868 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>ARIA Nexus One Hub</title>
+  <style>
+    :root { color-scheme: light; }
+    body {
+      width: 360px;
+      margin: 0;
+      padding: 14px;
+      background: #fbf6ea;
+      color: #1f2a1f;
+      font: 14px/1.4 system-ui, -apple-system, Segoe UI, sans-serif;
+    }
+    body.full-panel {
+      width: min(1180px, calc(100vw - 48px));
+      min-height: calc(100vh - 48px);
+      margin: 0 auto;
+      padding: 24px;
+    }
+    body.full-panel .shell {
+      display: grid;
+      grid-template-columns: minmax(320px, 1fr) minmax(360px, 1fr);
+      gap: 18px;
+      align-items: start;
+    }
+    body.full-panel .wide {
+      grid-column: 1 / -1;
+    }
+    .brand { display:flex; align-items:center; gap:10px; margin-bottom:6px; }
+    .brand img { width:34px; height:34px; border-radius:9px; box-shadow:0 6px 18px rgba(21,128,61,.22); }
+    h1 { margin: 0; font-size: 19px; letter-spacing: 0; }
+    p { margin: 0 0 10px; color: #6f675d; }
+    label { display:block; font-weight:800; margin-top:10px; }
+    input, select, textarea {
+      width: 100%;
+      box-sizing: border-box;
+      margin-top: 5px;
+      padding: 10px;
+      border: 1px solid #ddd1bf;
+      border-radius: 9px;
+      background: #fffdf8;
+      color: #1f2a1f;
+      font: inherit;
+      outline: none;
+    }
+    textarea { min-height: 74px; resize: vertical; }
+    .checkline { display:flex; align-items:center; gap:8px; margin-top:8px; font-weight:800; }
+    .checkline input { width:auto; margin:0; }
+    .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 10px; }
+    .chips { display: flex; gap: 7px; flex-wrap: wrap; margin-top: 8px; }
+    .chips button { padding: 7px 9px; background: #fffdf8; color: #1f2a1f; border: 1px solid #ddd1bf; }
+    .chips button.active { background: #4f46e5; color:#fff; border-color:#4f46e5; box-shadow:0 4px 14px rgba(79,70,229,.18); }
+    .counts { display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-top:8px; }
+    .countbox { border:1px solid #e1d6c4; border-radius:9px; background:#fffdf8; padding:9px; font-weight:900; }
+    .countbox span { display:block; color:#137a3d; font-size:20px; }
+    .vault-list { max-height:190px; overflow:auto; margin-top:8px; border:1px solid #e1d6c4; border-radius:10px; background:#fffdf8; }
+    .vault-row { display:grid; grid-template-columns:auto 1fr auto; gap:8px; align-items:start; padding:9px; border-bottom:1px solid #eee2d0; }
+    .vault-row:last-child { border-bottom:0; }
+    .vault-title { font-weight:900; overflow-wrap:anywhere; }
+    .vault-meta { font-size:12px; color:#756d64; overflow-wrap:anywhere; }
+    .badge { display:inline-flex; align-items:center; border-radius:999px; padding:2px 7px; background:#edf7ed; color:#137a3d; font-size:11px; font-weight:900; }
+    button {
+      border: 0;
+      border-radius: 9px;
+      padding: 10px;
+      font-weight: 900;
+      cursor: pointer;
+      background: #15803d;
+      color: #fff;
+    }
+    button.secondary { background: #4f46e5; }
+    button.warn { background: #c84f38; }
+    button.orange { background: #ea7d28; color:#111827; }
+    .status {
+      margin-top: 12px;
+      padding: 10px;
+      border: 1px solid #e1d6c4;
+      border-radius: 9px;
+      background: #fffaf0;
+      min-height: 54px;
+      white-space: pre-wrap;
+    }
+    .small { font-size: 12px; color: #766d61; }
+    .hub {
+      margin: 10px 0;
+      padding: 10px;
+      border: 1px solid #c7dfcc;
+      border-radius: 10px;
+      background: #eff9ef;
+      color: #1f2a1f;
+      font-size: 12px;
+    }
+    .hub strong { color:#137a3d; }
+    body.dark-mode {
+      background: #0f172a;
+      color: #f8fafc;
+    }
+    body.dark-mode p,
+    body.dark-mode .small,
+    body.dark-mode .vault-meta {
+      color: #cbd5e1;
+    }
+    body.dark-mode input,
+    body.dark-mode select,
+    body.dark-mode textarea,
+    body.dark-mode .vault-list,
+    body.dark-mode .countbox,
+    body.dark-mode .status {
+      background: #111827;
+      border-color: #334155;
+      color: #f8fafc;
+    }
+    body.dark-mode .hub {
+      background: #10261e;
+      border-color: #1f7a4a;
+      color: #e5f7eb;
+    }
+    body.dark-mode .chips button {
+      background: #111827;
+      border-color: #334155;
+      color: #f8fafc;
+    }
+    body.dark-mode .chips button.active {
+      background: #6d28d9;
+      border-color: #6d28d9;
+      color: #fff;
+    }
+    body.dark-mode .vault-row {
+      border-bottom-color: #1f2937;
+    }
+  </style>
+</head>
+<body>
+  <div class="brand">
+    <img src="icons/aria-48.png" alt="ARIA logo" />
+    <h1>ARIA Nexus One Hub</h1>
+    <button id="themeToggle" class="secondary" style="margin-left:auto;padding:7px 9px">Theme</button>
+  </div>
+  <p>One extension. Serverless controls for ChatGPT, ClickUp, social drafts, X, images, video helpers, and universal page sending.</p>
+  <div class="hub"><strong>Nexus One v4.28.0:</strong> Send Number Lock. Use Send # Now when a site is stubborn: ARIA sends the current number/prompt, proves the page accepted it, and only then lets the counter move forward.</div>
+  <div id="targetInfo" class="hub" style="display:none"></div>
+  <button id="openFullPanel" class="secondary" style="width:100%;margin-top:8px">Open Full Page Panel</button>
+  <button id="reloadExtensionNow" class="orange" style="width:100%;margin-top:8px">Reload Extension Now</button>
+  <div class="hub">
+    <strong>Quick command launcher:</strong> Type one simple command and ARIA will route it safely.
+    <input id="quickCommandInput" placeholder="open word | search web ai tools | search files invoice | open ai studio | run | stop | status" />
+    <div class="grid">
+      <button id="quickCommandRun" class="secondary">Run Quick Command</button>
+      <button id="quickCommandHelp" class="orange">Command Help</button>
+    </div>
+    <div class="small">Examples: open chrome, open notepad, search web scholarship forms, search files invoice, open chatgpt, open ai studio, run, stop, status.</div>
+  </div>
+  <div class="hub">
+    <strong>AI Tool Radar:</strong> Paste your goal, and ARIA will choose the best current AI tool stack and build a ready prompt.
+    <label>Goal / task</label>
+    <textarea id="toolRadarGoal" placeholder="e.g. build a SaaS dashboard, fix React bug, research competitors, create video script, prepare social campaign"></textarea>
+    <label>Workflow type</label>
+    <select id="toolRadarType">
+      <option value="auto">Auto choose</option>
+      <option value="code">Code / build</option>
+      <option value="debug">Debug / refactor</option>
+      <option value="webapp">Web app / UI</option>
+      <option value="research">Research / brief</option>
+      <option value="video">Video / content</option>
+      <option value="social">Social campaign</option>
+      <option value="security">Security review</option>
+      <option value="data">Data / automation</option>
+    </select>
+    <div class="grid">
+      <button id="toolRadarPlan" class="secondary">Tool Radar</button>
+      <button id="toolRadarOpen" class="orange">Open Best Tool</button>
+    </div>
+    <button id="toolRadarFill" class="secondary" style="width:100%;margin-top:8px">Fill Tool Prompt</button>
+    <div class="small">Tip: quick command bhi use kar sakte hain: tool radar [goal], open best tool [goal], fill tool prompt [goal].</div>
+  </div>
+  <div class="hub">
+    <strong>Prompt Recipe Builder:</strong> One-click polished prompts for coding agents, research, content, social drafts, automation, and video workflows.
+    <label>Recipe goal</label>
+    <textarea id="recipeGoal" placeholder="e.g. build a WA sender dashboard, debug Google AI Studio sender, create LinkedIn campaign, write 10 video scripts"></textarea>
+    <label>Recipe type</label>
+    <select id="recipeType">
+      <option value="code">Code build</option>
+      <option value="debug">Debug and fix</option>
+      <option value="research">Research report</option>
+      <option value="social">Social campaign draft</option>
+      <option value="video">Video/content pipeline</option>
+      <option value="automation">Automation workflow</option>
+      <option value="handoff">Agent handoff brief</option>
+    </select>
+    <label>Constraints / style</label>
+    <textarea id="recipeConstraints" placeholder="e.g. Hinglish output, do not break existing files, include tests, keep public actions manual"></textarea>
+    <div class="grid">
+      <button id="recipeBuild" class="secondary">Build Recipe</button>
+      <button id="recipeCopy" class="orange">Copy Recipe</button>
+    </div>
+    <button id="recipeFill" class="secondary" style="width:100%;margin-top:8px">Fill Recipe Prompt</button>
+    <div class="small">Quick commands: recipe [goal], fill recipe [goal], copy recipe.</div>
+  </div>
+  <div class="hub">
+    <strong>Prompt Queue Wizard:</strong> Convert a task into many prompts and load them into the automation queue.
+    <label>Queue goal / rough plan</label>
+    <textarea id="queueWizardSource" placeholder="e.g. build a full WA sender platform with dashboard, auth, campaign builder, scheduler, analytics, tests"></textarea>
+    <div class="grid">
+      <label>Prompt count<input id="queueWizardCount" type="number" min="2" max="50" value="8" /></label>
+      <label>Queue style
+        <select id="queueWizardStyle">
+          <option value="build">Build project</option>
+          <option value="debug">Debug/fix</option>
+          <option value="research">Research/report</option>
+          <option value="content">Content/social</option>
+          <option value="handoff">Agent handoff</option>
+        </select>
+      </label>
+    </div>
+    <div class="grid">
+      <button id="queueWizardBuild" class="secondary">Build Queue</button>
+      <button id="queueWizardCopy" class="orange">Copy Queue</button>
+    </div>
+    <div class="grid">
+      <button id="queueWizardLoad" class="secondary">Load Queue</button>
+      <button id="queueWizardStart" class="orange">Load + Start</button>
+    </div>
+    <div class="small">Quick commands: queue [goal], load queue [goal], start queue [goal]. It uses the existing response-complete guard before moving to the next prompt.</div>
+  </div>
+  <div class="hub">
+    <strong>Advanced controls:</strong> Save your current setup as a preset before heavy automation, export settings for backup, and use Emergency Stop All if any tab keeps running.
+    <div class="grid">
+      <button id="systemSnapshot" class="secondary">System Snapshot</button>
+      <button id="emergencyStopAll" class="warn">Emergency Stop All</button>
+    </div>
+    <label>Preset name</label>
+    <input id="advancedPresetName" placeholder="e.g. coding-agent-5s, word-capture, social-draft" />
+    <select id="advancedPresetSelect" style="margin-top:8px"><option value="">No saved presets yet</option></select>
+    <div class="grid">
+      <button id="advancedPresetSave" class="secondary">Save Preset</button>
+      <button id="advancedPresetLoad" class="orange">Load Preset</button>
+    </div>
+    <div class="grid">
+      <button id="advancedPresetDelete" class="warn">Delete Preset</button>
+      <button id="exportSettings" class="secondary">Export Settings</button>
+    </div>
+    <input id="importSettingsFile" type="file" accept=".json,application/json" />
+    <div class="grid">
+      <button id="exportState" class="secondary">Export State</button>
+      <label class="orange" style="display:block;margin-top:0;padding:10px;border-radius:9px;text-align:center;cursor:pointer">
+        Import State
+        <input id="importStateFile" type="file" accept=".json,application/json" style="display:none" />
+      </label>
+    </div>
+  </div>
+
+  <div class="shell">
+  <section>
+  <label>Automation mode</label>
+  <select id="mode">
+    <option value="auto">Auto detect for this site</option>
+    <option value="universal">Universal sender</option>
+    <option value="chatgpt">ChatGPT sender</option>
+    <option value="clickup">ClickUp sender</option>
+    <option value="manus">Manus AI runner</option>
+    <option value="claude">Claude sender</option>
+    <option value="gemini">Gemini sender</option>
+    <option value="deepseek">DeepSeek sender</option>
+    <option value="grok">Grok sender</option>
+    <option value="mscopilot">MS Copilot sender</option>
+    <option value="windsurf">Windsurf sender</option>
+  </select>
+
+  <button id="oneClick" style="width:100%;margin-top:10px">One-Click Start Current Site</button>
+  <button id="checkTab" class="secondary" style="width:100%;margin-top:8px">Check This Tab</button>
+  <div class="grid">
+    <button id="automationDoctor" class="secondary">Automation Doctor</button>
+    <button id="repairCurrentTab" class="orange">Repair Current Tab</button>
+  </div>
+  <button id="desktopBridgeDoctor" class="secondary" style="width:100%;margin-top:8px">Desktop Bridge Doctor</button>
+
+  <label>Time between sends (seconds)</label>
+  <input id="seconds" type="number" min="1" value="5" />
+  <div class="chips">
+    <button data-sec="4">4s</button>
+    <button data-sec="5">5s</button>
+    <button data-sec="15">15s</button>
+    <button data-sec="30">30s</button>
+    <button data-sec="60">60s</button>
+    <button data-sec="90">90s</button>
+  </div>
+  <label>Stop after N sends</label>
+  <div class="grid">
+    <input id="stopAfterN" type="number" min="0" value="0" placeholder="0 = run forever" />
+    <button id="clearStopAfterN" class="secondary">Clear N</button>
+  </div>
+  <label class="checkline"><input id="limitGuardEnabled" type="checkbox" /> Auto pause on AI limit/rate messages</label>
+  <label>Limit fallback cooldown (minutes)</label>
+  <input id="limitCooldownMinutes" type="number" min="5" max="1440" value="10" />
+  <div class="grid">
+    <button id="limitCooldown5" class="secondary">5 min pause</button>
+    <button id="limitCooldown10" class="orange">10 min pause</button>
+  </div>
+  <div class="grid">
+    <button id="limitGuardToggle" class="secondary">Toggle Limit Guard</button>
+    <button id="limitClearWait" class="warn">Clear Limit Wait</button>
+  </div>
+  <div class="grid">
+    <button id="limitPauseNow" class="orange">Pause Now</button>
+    <button id="limitGuardStatus" class="secondary">Limit Status</button>
+  </div>
+
+  <label>Response-aware guardrails</label>
+  <label class="checkline"><input id="autoScroll" type="checkbox" /> Auto-scroll before every send</label>
+  <label>Minimum response characters before next send</label>
+  <input id="minResponseChars" type="number" min="0" value="0" placeholder="0 = off, e.g. 200" />
+  <label class="checkline"><input id="selfHealFailedSends" type="checkbox" /> Self-heal failed sends after 5 rejected attempts</label>
+  <label>Self-heal retry delay (seconds)</label>
+  <input id="selfHealRetrySeconds" type="number" min="30" value="60" placeholder="60" />
+  <div class="grid">
+    <button id="responseHistory" class="secondary">Response History</button>
+    <button id="dailyStats" class="orange">Daily Stats</button>
+  </div>
+  <div class="grid">
+    <button id="diffResponses" class="secondary">Diff Last 2</button>
+    <button id="runTabGroup" class="orange">Run Tab Group</button>
+  </div>
+  <button id="stopTabGroup" class="warn" style="width:100%;margin-top:8px">Stop Tab Group</button>
+
+  <label>v4.9 sync / quality / budget</label>
+  <select id="syncMode">
+    <option value="off">Sync mode: off</option>
+    <option value="leader">Sync mode: leader</option>
+    <option value="follower">Sync mode: follower</option>
+  </select>
+  <div class="grid">
+    <input id="tokenBudget" type="number" min="0" value="0" placeholder="Token budget, 0=off" />
+    <input id="minReplyWords" type="number" min="1" value="10" placeholder="Min reply words" />
+  </div>
+  <label class="checkline"><input id="skipShortReplies" type="checkbox" /> Wait when reply is too short</label>
+  <label class="checkline"><input id="autoRegen" type="checkbox" /> Auto-regenerate on error response</label>
+  <textarea id="regenKeywords" placeholder="error, failed, sorry, I cannot, I'm unable, try again"></textarea>
+  <input id="imageSaveFilter" placeholder="Image save filter keywords, comma separated" />
+  <label>Chain target tab</label>
+  <select id="chainTargetTabId"><option value="0">No chain target</option></select>
+  <label class="checkline"><input id="screenshotOnStop" type="checkbox" /> Save screenshot when tab stops</label>
+  <label class="checkline"><input id="clipboardWatch" type="checkbox" /> Clipboard watch adds copied text to queue</label>
+
+  <label>Quick profiles</label>
+  <div class="grid">
+    <button id="profileMaxSpeed" class="secondary">Max Speed</button>
+    <button id="profileSafeCapture" class="orange">Safe Capture</button>
+  </div>
+  <div class="grid">
+    <button id="profileSmartLoop" class="secondary">Smart Loop</button>
+    <button id="profileOvernight" class="orange">Overnight Run</button>
+  </div>
+
+  <label>Scheduled start / sleep window</label>
+  <input id="scheduledStartTime" type="time" title="Start at local time" />
+  <div class="grid">
+    <input id="sleepFrom" type="time" title="Sleep from" />
+    <input id="sleepUntil" type="time" title="Sleep until" />
+  </div>
+  <label class="checkline"><input id="pauseOnHidden" type="checkbox" /> Pause when tab is hidden</label>
+
+  <label>Keyword auto-stop</label>
+  <textarea id="stopKeywords" placeholder="done, complete, all files complete, limit reached"></textarea>
+
+  <label>Advanced site selectors</label>
+  <input id="customInputSelector" placeholder="Custom input selector, e.g. textarea, div[contenteditable=true]" />
+  <input id="customSendSelector" placeholder="Custom send button selector, optional" />
+  <input id="customResponseSelector" placeholder="Custom latest response selector, optional" />
+  <div class="grid">
+    <button id="siteTrainerStart" class="secondary">Train current site</button>
+    <button id="siteProfileApply" class="orange">Apply trained site</button>
+  </div>
+  <div class="grid">
+    <button id="siteProfileStatus" class="secondary">Site profile</button>
+    <button id="siteProfileClear" class="warn">Clear trained site</button>
+  </div>
+  <div class="grid">
+    <button id="siteProfilesExport" class="secondary">Export trained profiles</button>
+    <label class="orange" style="display:block;margin-top:0;padding:10px;border-radius:9px;text-align:center;cursor:pointer">
+      Import trained profiles
+      <input id="siteProfilesImportFile" type="file" accept=".json,application/json" style="display:none" />
+    </label>
+  </div>
+
+  <label>Stop / limit webhook</label>
+  <input id="webhookUrl" placeholder="https:// webhook URL for stop/limit notifications" />
+  <label class="checkline"><input id="webhookOnStop" type="checkbox" /> Notify webhook when automation stops or hits a limit</label>
+
+  <label>Send text</label>
+  <select id="sendMode">
+    <option value="numbers">Numbers: 1,2,3...</option>
+    <option value="dot">Dot: .</option>
+    <option value="custom">Custom text</option>
+    <option value="smart">Smart AI prompt</option>
+    <option value="manus">Manus next/all/best</option>
+  </select>
+  <input id="customText" value="continue" />
+  <input id="nextNumber" type="number" min="1" value="1" />
+  <label>Smart prompt instruction</label>
+  <textarea id="smartPromptInstruction" placeholder="Example: continue coding, ask for next file, fix bugs, request ZIP, move from ClickUp response into best next prompt."></textarea>
+  <div class="grid">
+    <button id="smartPromptFill" class="secondary">Generate Smart Prompt</button>
+    <button id="smartPromptSend" class="orange">Generate + Send</button>
+  </div>
+
+  <label>Manus AI runner</label>
+  <div class="hub"><strong>Manus safe mode:</strong> refreshes once in the morning when enabled, then sends next/all/best after the response is stable. It stops on visible credit/limit warnings and at the max-send cap.</div>
+  <div class="grid">
+    <input id="manusMaxSends" type="number" min="1" max="300" value="300" title="Max Manus sends/credits for this tab" />
+    <input id="manusMorningRefreshHour" type="number" min="0" max="23" value="7" title="Morning refresh hour" />
+  </div>
+  <input id="manusFallbackText" value="do what is best" placeholder="Reply when same question repeats" />
+  <label class="checkline"><input id="manusMorningRefresh" type="checkbox" /> Manus morning refresh once per day</label>
+  <div class="grid">
+    <button id="manusStart" class="secondary">Manus Start 300</button>
+    <button id="manusStatus" class="orange">Manus Status</button>
+  </div>
+  <div class="grid">
+    <button id="manusRefresh" class="secondary">Refresh Manus</button>
+    <button id="manusStop" class="warn">Stop Manus</button>
+  </div>
+
+  <label>Scholarship Form Assistant</label>
+  <div class="hub"><strong>Safe draft mode:</strong> paste applicant profile, open any scholarship form, then analyze or fill. ARIA fills only confident matches and never clicks final Submit.</div>
+  <textarea id="scholarshipProfile" placeholder="Example:
+full name=Abdul Basit
+email=example@gmail.com
+phone=0300...
+city=Lahore
+education=BS Computer Science
+family income=...
+statement=Why I need this scholarship..."></textarea>
+  <textarea id="scholarshipExtra" placeholder="Extra notes: target scholarship, preferred program, essay angle, missing fields to leave blank, etc."></textarea>
+  <div class="grid">
+    <button id="scholarshipAnalyze" class="secondary">Analyze Form</button>
+    <button id="scholarshipFill" class="orange">Fill Safe Draft</button>
+  </div>
+  <div class="grid">
+    <button id="scholarshipHighlight" class="secondary">Highlight Missing</button>
+    <button id="scholarshipClear" class="warn">Clear Marks</button>
+  </div>
+
+  <label>Full prompt / file text first</label>
+  <textarea id="initialPrompt" placeholder="Paste your full prompt or complete file text here. ARIA can send this first, then continue with numbers/dot/custom after the response ends."></textarea>
+  <input id="promptFile" type="file" accept=".txt,.md,.json,.js,.ts,.tsx,.jsx,.py,.html,.css,.csv,.xml,.yml,.yaml,.sql,.sh,.bat,.ps1" />
+  <label class="checkline"><input id="sendPromptFirst" type="checkbox" /> Send this prompt first, then auto-continue</label>
+  <label>Prompt queue</label>
+  <textarea id="promptQueue" placeholder="Paste many prompts here. Use one prompt per line, or separate larger prompts with a blank line. ARIA sends them one by one after each response completes."></textarea>
+  <label class="checkline"><input id="usePromptQueue" type="checkbox" /> Use prompt queue before numbers/dot/custom</label>
+  <div class="grid">
+    <button id="sendPromptNow" class="secondary">Send Full Prompt Now</button>
+    <button id="resetPromptFlag" class="orange">Allow Prompt Again</button>
+  </div>
+
+  <label>Prompt templates</label>
+  <input id="templateName" placeholder="Template name, e.g. coding follow-up" />
+  <div class="grid">
+    <button id="saveTemplate" class="secondary">Save Template</button>
+    <button id="exportTemplates" class="orange">Export Templates</button>
+  </div>
+  <input id="importTemplatesFile" type="file" accept=".json,application/json" />
+  <div id="templatesList" class="status">No templates loaded.</div>
+
+  <label>Conditional next prompt rules</label>
+  <input id="condKeyword" placeholder="If response contains keyword..." />
+  <textarea id="condPrompt" placeholder="Then send this next prompt once..."></textarea>
+  <input id="condMaxUses" type="number" min="1" value="1" />
+  <button id="addCondRule" class="secondary" style="width:100%;margin-top:8px">Add Conditional Rule</button>
+  <div id="condRulesList" class="status">No rules.</div>
+
+  <div class="grid">
+    <button id="run">Run This Tab</button>
+    <button id="stop" class="warn">Stop This Tab</button>
+  </div>
+  <button id="sendCurrentNumberNow" class="orange" style="width:100%;margin-top:8px">Send # Now - Lock Until Accepted</button>
+  <div class="grid">
+    <button id="runSame" class="secondary">Run Same Site Tabs</button>
+    <button id="stopRunning" class="warn">Stop Running Tabs</button>
+  </div>
+  <div class="grid">
+    <button id="runAiTabs" class="secondary">Run AI/Coding Tabs</button>
+    <button id="runWindowTabs" class="orange">Run Window Tabs</button>
+  </div>
+  <div class="grid">
+    <button id="runSafeTabs" class="secondary">Run All Safe Tabs</button>
+    <button id="showRunnersTop" class="orange">Running Tabs</button>
+  </div>
+  <div class="grid">
+    <button id="diagnoseAiTabs" class="secondary">Diagnose AI Tabs</button>
+    <button id="diagnoseSafeTabs" class="orange">Diagnose Safe Tabs</button>
+  </div>
+  <div class="grid">
+    <button id="aiStudioForceSend" class="orange">Force AI Studio Send</button>
+    <button id="aiStudioDiagnose" class="secondary">AI Studio Diagnose</button>
+  </div>
+  <div class="grid">
+    <button id="rescueStuckInput" class="orange">Rescue Stuck Send</button>
+    <button id="panel" class="secondary">Show Panel</button>
+  </div>
+  <div class="grid">
+    <button id="retryFailedSend" class="secondary">Retry Failed Send</button>
+    <button id="skipFailedSend" class="warn">Skip Failed Send</button>
+  </div>
+  <div class="grid">
+    <button id="reset" class="orange">Reset Counter</button>
+  </div>
+
+  <label>ChatGPT image prompt</label>
+  <textarea id="imagePrompt" placeholder="Create a social media image about..."></textarea>
+  <input id="imageFolder" value="Basit Social Media" />
+  <div class="grid">
+    <button id="generateImage" class="secondary">Generate Image</button>
+    <button id="saveImages" class="orange">Save Images</button>
+  </div>
+
+  <label>Video pipeline: ChatGPT -> Sheets -> HeyGen</label>
+  <textarea id="videoTopicPrompt" placeholder="Topic seed for ChatGPT, e.g. 30 LinkedIn video ideas for AI automation agency"></textarea>
+  <input id="videoFolder" value="Basit Social Media/HeyGen Videos" />
+  <div class="grid">
+    <button id="videoGenerateTopics" class="secondary">Ask ChatGPT Topics</button>
+    <button id="videoCaptureTopics" class="orange">Capture Topics</button>
+  </div>
+  <div class="grid">
+    <button id="videoCopyCsv" class="secondary">Copy Sheet Rows</button>
+    <button id="videoOpenSheets" class="orange">Open Sheets</button>
+  </div>
+  <div class="grid">
+    <button id="videoHeyGenFill" class="secondary">Fill HeyGen Topic</button>
+    <button id="videoCaptureLink" class="orange">Capture Video Link</button>
+  </div>
+  <div class="grid">
+    <button id="videoDownload" class="secondary">Download Official Video</button>
+    <button id="videoStatus" class="orange">Pipeline Status</button>
+  </div>
+
+  <div class="grid">
+    <button id="xSafe" class="secondary">X Safe Prep</button>
+    <button id="copyCode" class="secondary">Copy Code Blocks</button>
+  </div>
+  <label>ClickUp / Coding Agent Code Vault</label>
+  <div class="grid">
+    <button id="codeVaultSave" class="secondary">Save Visible Code</button>
+    <button id="codeVaultZip" class="orange">Download Code ZIP</button>
+  </div>
+  <div class="grid">
+    <button id="codeVaultStatus" class="secondary">Vault Status</button>
+    <button id="codeVaultAutoScan" class="orange">Auto Code Scan</button>
+  </div>
+  <div class="grid">
+    <button id="codeVaultPaste" class="secondary">Paste Latest Code</button>
+    <button id="codeVaultSend" class="orange">Send Latest Code</button>
+  </div>
+  <button id="codeVaultCopy" class="secondary">Copy Latest Code</button>
+
+  <label>AI Response Vault - ZIP / Store / Agents</label>
+  <div class="hub"><strong>Auto-save:</strong> Copy Latest / Copy All stores responses locally with source, topic, timestamp, URL, and hash. Build ZIP first captures all visible responses from the current tab, then exports all saved responses by default.</div>
+  <div class="counts">
+    <div class="countbox"><span id="responseVaultCount">0</span>responses saved</div>
+    <div class="countbox"><span id="responseVaultZipCount">0</span>ZIPs created</div>
+  </div>
+  <div class="grid">
+    <button id="responseVaultSaveLatest" class="secondary">Save Latest Visible</button>
+    <button id="responseVaultSaveAll" class="orange">Save All Visible</button>
+  </div>
+  <div id="responseVaultList" class="vault-list"><div class="vault-row"><div></div><div class="vault-meta">No saved responses yet.</div><div></div></div></div>
+  <div class="grid">
+    <button id="responseVaultSelectAll" class="secondary">Select all</button>
+    <button id="responseVaultClear" class="warn">Clear vault</button>
+  </div>
+  <label>ZIP file name</label>
+  <input id="responseVaultZipName" placeholder="AI_Responses_2026-05-21" />
+  <label>Cloud storage - where to save ZIP / payload</label>
+  <div class="chips" id="responseVaultStorageChips">
+    <button data-storage="google_drive">Google Drive</button>
+    <button data-storage="dropbox">Dropbox</button>
+    <button data-storage="onedrive">OneDrive</button>
+    <button data-storage="aws_s3">AWS S3</button>
+    <button data-storage="supabase">Supabase</button>
+    <button data-storage="local" class="active">Local only</button>
+  </div>
+  <label>Coding agents - forward selected responses to</label>
+  <div class="chips" id="responseVaultAgentChips">
+    <button data-agent="github_gist">GitHub Gist</button>
+    <button data-agent="github_repo">GitHub Repo</button>
+    <button data-agent="claude_code">Claude Code</button>
+    <button data-agent="openai_codex">OpenAI Codex</button>
+    <button data-agent="cursor">Cursor IDE</button>
+    <button data-agent="copilot">Copilot</button>
+    <button data-agent="webhook_n8n">Webhook/n8n</button>
+    <button data-agent="zapier">Zapier</button>
+  </div>
+  <label>File format inside ZIP</label>
+  <div class="chips" id="responseVaultFormatChips">
+    <button data-format="txt" class="active">.txt</button>
+    <button data-format="md">.md</button>
+    <button data-format="json">.json</button>
+    <button data-format="html">.html</button>
+  </div>
+  <input id="responseVaultWebhookUrl" placeholder="Optional webhook / n8n / Zapier URL" />
+  <div class="grid">
+    <button id="responseVaultBuildZip" class="secondary">Build ZIP - All</button>
+    <button id="responseVaultSendAgents" class="orange">All -> agents</button>
+  </div>
+  <button id="responseVaultStoreSend" style="width:100%;margin-top:8px">All ZIP + Store + Send</button>
+
+  <div class="grid">
+    <button id="allowCopy" class="secondary">Allow Copy This Tab</button>
+    <button id="copyResponse" class="secondary">Copy Latest Response</button>
+  </div>
+  <div class="grid">
+    <button id="allowAndCopy" class="orange">Allow + Copy Now</button>
+    <button id="blockCopy" class="warn">Block Copy This Tab</button>
+  </div>
+  <div class="grid">
+    <button id="sendWord" class="secondary">Send Latest to Word</button>
+    <button id="newWord" class="orange">New Word Doc</button>
+  </div>
+  <input id="wordTopic" placeholder="Word doc name/topic (optional)" />
+  <label>Word save mode</label>
+  <select id="wordSaveMode">
+    <option value="full">Full response + code</option>
+    <option value="code">Code blocks first</option>
+  </select>
+  <label class="checkline"><input id="autoWordSave" type="checkbox" /> Auto-save each finished response to Word before next send</label>
+  <label class="checkline"><input id="autoCodexSave" type="checkbox" /> Auto-save each finished response to Codex bridge before next send</label>
+  <label class="checkline"><input id="wordOpenAfterSave" type="checkbox" /> Open Word after every manual save</label>
+  <div class="grid">
+    <button id="openWord" class="secondary">Open Word</button>
+    <button id="openWordFolder" class="orange">Word Folder</button>
+  </div>
+  <div class="grid">
+    <button id="copyAndWord" class="secondary">Copy + Word</button>
+    <button id="allowCopyAndWord" class="orange">Allow + Copy + Word</button>
+  </div>
+  <div class="grid">
+    <button id="copyAllResponses" class="secondary">Copy All Responses</button>
+    <button id="allResponsesWord" class="orange">All Responses -> Word</button>
+  </div>
+  <div class="grid">
+    <button id="copyLatestPrompt" class="secondary">Copy Latest Prompt</button>
+    <button id="copyAllPrompts" class="orange">Copy All Prompts</button>
+  </div>
+  <label>Desktop app bridge target</label>
+  <select id="desktopTarget">
+    <option value="focused">Any focused app</option>
+    <option value="notepad">Open Notepad</option>
+    <option value="word">Open Microsoft Word</option>
+    <option value="excel">Open Microsoft Excel</option>
+    <option value="powerpoint">Open PowerPoint</option>
+    <option value="vscode">Open VS Code</option>
+    <option value="cursor">Open Cursor</option>
+    <option value="android_studio">Open Android Studio</option>
+    <option value="chrome">Open Chrome</option>
+    <option value="edge">Open Edge</option>
+    <option value="explorer">Open File Explorer</option>
+    <option value="codex">Open Codex/ChatGPT</option>
+  </select>
+  <div class="grid">
+    <input id="desktopPasteDelay" type="number" min="1" max="15" value="3" title="Seconds before paste" />
+    <label class="checkline"><input id="desktopOpenTarget" type="checkbox" /> Open target</label>
+  </div>
+  <div class="grid">
+    <button id="pasteLatestDesktop" class="secondary">Paste Latest -> Any App</button>
+    <button id="pasteAllDesktop" class="orange">Paste All -> Any App</button>
+  </div>
+  <div class="grid">
+    <button id="pasteLatestPromptDesktop" class="secondary">Latest Prompt -> Any App</button>
+    <button id="pasteAllPromptsDesktop" class="orange">All Prompts -> Any App</button>
+  </div>
+  <button id="pasteFullChatDesktop" class="secondary" style="width:100%;margin-top:8px">Full Chat -> Any App</button>
+  <label>Open desktop app / search</label>
+  <input id="desktopOpenAppName" placeholder="app name: notepad, word, excel, vscode, android studio, chrome, explorer" />
+  <div class="grid">
+    <button id="openDesktopApp" class="secondary">Open App</button>
+    <button id="openAppSearchHelp" class="orange">App List</button>
+  </div>
+  <input id="desktopSearchQuery" placeholder="search query for Google or Windows files" />
+  <div class="grid">
+    <button id="openWebSearch" class="secondary">Google Search</button>
+    <button id="openWindowsSearch" class="orange">Windows Search</button>
+  </div>
+  <label>App-to-App transfer bridge</label>
+  <div class="grid">
+    <button id="copyTransferBundle" class="secondary">Copy Transfer Bundle</button>
+    <button id="pasteTransferInput" class="orange">Transfer -> Current Input</button>
+  </div>
+  <div class="grid">
+    <button id="pasteTransferDesktop" class="secondary">Transfer -> Any App</button>
+    <button id="downloadTransferBundle" class="orange">Download Transfer .md</button>
+  </div>
+  <label>Credits-aware app router</label>
+  <textarea id="appRouterTask" placeholder="e.g. Choose the best app with available credits to make a video, then move caption + output to social drafts."></textarea>
+  <div class="grid">
+    <button id="appRouterStatus" class="secondary">App Status</button>
+    <button id="copyAppRoutePlan" class="orange">Copy Route Plan</button>
+  </div>
+  <div class="grid">
+    <button id="pasteAppRouteInput" class="secondary">Route -> Current Input</button>
+    <button id="pasteAppRouteDesktop" class="orange">Route -> Any App</button>
+  </div>
+  <button id="downloadAppRoutePlan" class="secondary" style="width:100%;margin-top:8px">Download Route .md</button>
+  <div class="grid">
+    <button id="latestNotepad" class="secondary">Latest -> Notepad</button>
+    <button id="allNotepad" class="orange">All -> Notepad</button>
+  </div>
+  <div class="grid">
+    <button id="latestGoogleDocs" class="secondary">Latest -> GDocs</button>
+    <button id="allGoogleDocs" class="orange">All -> GDocs</button>
+  </div>
+  <input id="driveTitle" placeholder="Google Drive save title (optional)" />
+  <label class="checkline"><input id="driveAutoSave" type="checkbox" /> Auto-save each finished response to Google Drive backup</label>
+  <div class="grid">
+    <button id="latestDrive" class="secondary">Latest -> Drive</button>
+    <button id="allResponsesDrive" class="orange">All -> Drive</button>
+  </div>
+  <div class="grid">
+    <button id="driveStatus" class="secondary">Drive Status</button>
+    <button id="openDriveFolder" class="orange">Drive Folder</button>
+  </div>
+  <div class="grid">
+    <button id="latestCodex" class="secondary">Latest -> Codex</button>
+    <button id="allResponsesCodex" class="orange">All -> Codex</button>
+  </div>
+  <div class="grid">
+    <button id="latestVSCode" class="secondary">Latest -> VS Code</button>
+    <button id="allResponsesVSCode" class="orange">All -> VS Code</button>
+  </div>
+  <label>Coding target router</label>
+  <select id="codingTarget">
+    <option value="codex">Codex web</option>
+    <option value="vscode">VS Code</option>
+    <option value="cursor">Cursor</option>
+    <option value="android_studio">Android Studio</option>
+    <option value="claude">Claude</option>
+    <option value="chatgpt">ChatGPT</option>
+    <option value="gemini">Gemini</option>
+    <option value="clickup">ClickUp</option>
+  </select>
+  <div class="grid">
+    <button id="latestCodingTarget" class="secondary">Latest -> target</button>
+    <button id="allCodingTarget" class="orange">All -> target</button>
+  </div>
+  <div class="grid">
+    <button id="wordDocCodingTarget" class="secondary">Word -> target</button>
+    <button id="openCodingTarget" class="orange">Open target</button>
+  </div>
+  <label class="checkline"><input id="clickupChatgptSendNow" type="checkbox" /> ClickUp -> ChatGPT auto-send after paste</label>
+  <div class="grid">
+    <button id="clickupAllToChatGpt" class="secondary">ClickUp all -> ChatGPT</button>
+    <button id="clickupLiveToChatGpt" class="orange">Live CU -> GPT</button>
+  </div>
+  <div class="grid">
+    <button id="clickupStopLiveToChatGpt" class="warn">Stop CU -> GPT</button>
+    <button id="clickupBridgeStatus" class="secondary">CU -> GPT status</button>
+  </div>
+  <div class="grid">
+    <button id="codexOutboxInput" class="secondary">Codex -> Input</button>
+    <button id="codexOutboxSend" class="orange">Codex -> Send</button>
+  </div>
+  <button id="wordDocCodex" class="secondary" style="width:100%;margin-top:8px">Word Doc -> Codex</button>
+  <button id="wordDocVSCode" class="secondary" style="width:100%;margin-top:8px">Word Doc -> VS Code</button>
+  <button id="basitWordAuto" style="width:100%;margin-top:10px">Basit Automate Word</button>
+  <button id="basitWordCodexAuto" class="secondary" style="width:100%;margin-top:8px">Basit Word + Codex Auto</button>
+  <button id="basitWordFullRun" class="secondary" style="width:100%;margin-top:8px">Save Old + Send Next</button>
+
+  <label>Guided one-click pipeline</label>
+  <textarea id="pipelineTopic" placeholder="Campaign/project topic. Each click runs one safe stage only."></textarea>
+  <div class="grid">
+    <button id="pipelineStart" class="secondary">Start Pipeline</button>
+    <button id="pipelineNext" class="orange">Next Step</button>
+  </div>
+  <div class="grid">
+    <button id="pipelineStatus" class="secondary">Pipeline Status</button>
+    <button id="pipelineReset" class="warn">Reset Pipeline</button>
+  </div>
+
+  <label>AI key for captions + smart prompts</label>
+  <select id="llmProvider">
+    <option value="groq">Groq</option>
+    <option value="openai">OpenAI</option>
+    <option value="openrouter">OpenRouter / free models</option>
+    <option value="custom">Custom local/OpenAI-compatible</option>
+  </select>
+  <input id="llmModel" placeholder="Model, e.g. llama-3.3-70b-versatile or meta-llama/llama-3.1-8b-instruct:free" />
+  <input id="llmBaseUrl" placeholder="Custom endpoint only, e.g. http://127.0.0.1:11434/v1/chat/completions" />
+  <input id="groqKey" type="password" placeholder="API key stays local in this browser" />
+  <div class="grid">
+    <button id="saveGroq" class="secondary">Save AI Key</button>
+    <button id="groqStatus" class="orange">AI Key Status</button>
+  </div>
+
+  <label>Social platform</label>
+  <select id="socialPlatform">
+    <option value="auto">Auto detect current site</option>
+    <option value="facebook">Facebook</option>
+    <option value="instagram">Instagram</option>
+    <option value="linkedin">LinkedIn</option>
+    <option value="x">X / Twitter</option>
+  </select>
+  <label>Social topic / caption instruction</label>
+  <textarea id="socialTopic" placeholder="e.g. motivational business post, caption for latest image, giveaway comment, LinkedIn company update"></textarea>
+  <input id="socialTone" value="friendly" />
+  <textarea id="socialExtra" placeholder="Extra instruction, hashtags, CTA, audience, Urdu/Roman Urdu, etc."></textarea>
+  <label>Pulse Post safe draft</label>
+  <textarea id="pulseComment" placeholder="Optional exact comment/draft. Leave blank and ARIA will build a safe draft from the current page."></textarea>
+  <div class="grid">
+    <button id="pulseAnalyze" class="secondary">Pulse Analyze</button>
+    <button id="pulseDraft" class="orange">Pulse Fill Draft</button>
+  </div>
+  <div class="grid">
+    <button id="pulseCopy" class="secondary">Pulse Copy Draft</button>
+    <button id="pulseYouTube" class="orange">YouTube Draft</button>
+  </div>
+  <div class="hub"><strong>Pulse safe mode:</strong> ARIA prepares and fills drafts only. Public Comment/Post/Like/Repost stays your manual click.</div>
+  <div class="grid">
+    <button id="socialCaption" class="secondary">Generate Caption</button>
+    <button id="socialFill" class="orange">Fill Post Draft</button>
+  </div>
+  <div class="grid">
+    <button id="socialComment" class="secondary">Fill Comment Draft</button>
+    <button id="socialHighlight" class="orange">Highlight Actions</button>
+  </div>
+  <div class="grid">
+    <button id="revenueBrief" class="secondary">Money Brief</button>
+    <button id="revenueFill" class="orange">Fill Money Draft</button>
+  </div>
+  <label>WhatsApp channel bridge</label>
+  <input id="whatsappSourceName" placeholder="Source chat/channel name (blank = current selected chat)" />
+  <input id="whatsappReceiverName" placeholder="Receiver chat/channel name (draft target)" />
+  <div class="grid">
+    <button id="waCurrentSource" class="secondary">Current WA -> Source</button>
+    <button id="waCurrentReceiver" class="orange">Current WA -> Receiver</button>
+  </div>
+  <button id="waCurrentSourceCopy" class="secondary" style="width:100%;margin-top:8px">Current WA -> Source + Copy</button>
+  <button id="waCurrentReceiverFill" class="orange" style="width:100%;margin-top:8px">Current WA -> Receiver + Fill</button>
+  <button id="waOneClickDraft" class="secondary" style="width:100%;margin-top:8px">WA source -> receiver draft</button>
+  <div class="grid">
+    <button id="waCopyPost" class="secondary">Copy post for WhatsApp</button>
+    <button id="waFillDraft" class="orange">Fill WhatsApp draft</button>
+  </div>
+  <div class="grid">
+    <button id="waOpen" class="secondary">Open WhatsApp</button>
+    <button id="waCopyDraft" class="orange">Copy WA draft</button>
+  </div>
+  <div class="grid">
+    <button id="waSwap" class="secondary">Swap WA bridge</button>
+    <button id="waClear" class="warn">Clear WA bridge</button>
+  </div>
+  <button id="waStatus" class="secondary" style="width:100%;margin-top:8px">WhatsApp bridge status</button>
+  <label class="checkline"><input id="publishConfirm" type="checkbox" /> I confirm public publish for current draft</label>
+  <div class="grid">
+    <button id="socialPublish" class="warn">Publish Current Draft</button>
+    <button id="socialOpen" class="secondary">Open Platform</button>
+  </div>
+  <div class="grid">
+    <button id="downloads" class="orange">Downloads</button>
+    <button id="showRunners" class="orange">Running Tabs</button>
+  </div>
+
+  <div id="status" class="status">Ready.</div>
+  </section>
+  </div>
+  <div class="small">Internal pages cannot be automated. Social public actions need this visible button click and your logged-in account.</div>
+  <script src="popup.js"></script>
+</body>
+</html>

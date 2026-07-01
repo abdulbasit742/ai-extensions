@@ -1,0 +1,22 @@
+{
+  "manifest_version": 3,
+  "name": "ARIA X Giveaway Assistant",
+  "version": "1.4.0",
+  "description": "Safe ARIA helper for X/Twitter giveaways: guided entry wizard, approved-friend tag drafts, checklists, reply drafts, and action highlights.",
+  "permissions": ["storage", "activeTab", "clipboardWrite"],
+  "host_permissions": [
+    "https://x.com/*",
+    "https://twitter.com/*"
+  ],
+  "action": {
+    "default_title": "ARIA X Giveaway Assistant",
+    "default_popup": "popup.html"
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://x.com/*", "https://twitter.com/*"],
+      "js": ["content.js"],
+      "run_at": "document_idle"
+    }
+  ]
+}

@@ -1,0 +1,52 @@
+{
+  "manifest_version": 3,
+  "name": "ARIA PULSE-POST V48",
+  "version": "1.4.8",
+  "description": "The Singularity AI Operating System. Modular, Autonomous, and Omnipotent.",
+  "permissions": [
+    "tabs",
+    "activeTab",
+    "scripting",
+    "storage",
+    "alarms",
+    "notifications",
+    "contextMenus",
+    "downloads",
+    "offscreen",
+    "sidePanel",
+    "commands"
+  ],
+  "host_permissions": ["<all_urls>"],
+  "background": {
+    "service_worker": "background.js",
+    "type": "module"
+  },
+  "action": {
+    "default_popup": "popup.html",
+    "default_icon": "assets/icon.png"
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content.js"]
+    }
+  ],
+  "commands": {
+    "toggle-omnipotence": {
+      "suggested_key": {
+        "default": "Ctrl+Shift+X",
+        "mac": "Command+Shift+X"
+      },
+      "description": "Engage Omnipotence Core"
+    }
+  },
+  "web_accessible_resources": [
+    {
+      "resources": ["assets/*", "ui/*", "templates/*"],
+      "matches": ["<all_urls>"]
+    }
+  ],
+  "icons": {
+    "128": "assets/icon.png"
+  }
+}

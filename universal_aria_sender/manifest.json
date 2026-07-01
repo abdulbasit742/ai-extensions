@@ -1,0 +1,27 @@
+{
+  "manifest_version": 3,
+  "name": "ARIA Universal Site Auto Sender",
+  "version": "2.1.1",
+  "description": "Pro universal ARIA sender for almost any website tab with serverless tab runners, tab-isolated counters, file-page support, and background wake.",
+  "permissions": ["storage", "tabs", "activeTab", "alarms", "offscreen"],
+  "host_permissions": [
+    "http://*/*",
+    "https://*/*",
+    "file://*/*",
+    "http://127.0.0.1:5050/*"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": ["http://*/*", "https://*/*", "file://*/*"],
+      "js": ["config.js", "content.js"],
+      "run_at": "document_idle"
+    }
+  ],
+  "action": {
+    "default_title": "ARIA Universal Sender",
+    "default_popup": "popup.html"
+  }
+}

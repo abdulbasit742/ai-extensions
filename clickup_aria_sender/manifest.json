@@ -1,0 +1,27 @@
+{
+  "manifest_version": 3,
+  "name": "ARIA ClickUp Auto Sender",
+  "version": "1.2.6",
+  "description": "Professional ARIA automation panel for ClickUp with background/offscreen tab wake, tab-isolated counters, and response-aware numbered/custom sending.",
+  "permissions": ["storage", "activeTab", "tabs", "alarms", "offscreen"],
+  "action": {
+    "default_title": "ARIA ClickUp Sender",
+    "default_popup": "popup.html"
+  },
+  "host_permissions": [
+    "https://app.clickup.com/*",
+    "http://127.0.0.1/*",
+    "http://localhost/*",
+    "http://*/*"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://app.clickup.com/*"],
+      "js": ["config.js", "content.js"],
+      "run_at": "document_idle"
+    }
+  ]
+}

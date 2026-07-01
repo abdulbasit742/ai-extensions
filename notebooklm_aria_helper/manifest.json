@@ -1,0 +1,18 @@
+{
+  "manifest_version": 3,
+  "name": "ARIA NotebookLM Video Helper",
+  "version": "1.0.0",
+  "description": "Connects NotebookLM to ARIA, starts the video overview workflow, and lets ARIA save downloaded videos.",
+  "permissions": ["storage"],
+  "host_permissions": [
+    "https://notebooklm.google.com/*",
+    "http://127.0.0.1:5050/*"
+  ],
+  "content_scripts": [
+    {
+      "matches": ["https://notebooklm.google.com/*"],
+      "js": ["content.js"],
+      "run_at": "document_idle"
+    }
+  ]
+}

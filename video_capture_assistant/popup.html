@@ -1,0 +1,25 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <style>
+      body { width: 300px; margin: 0; padding: 12px; font: 13px/1.4 system-ui, sans-serif; color: #162317; background: #fffaf0; }
+      strong { display: block; font-size: 16px; margin-bottom: 6px; }
+      p { margin: 6px 0 10px; color: #667064; }
+      button { width: 100%; border: 0; border-radius: 8px; padding: 9px; font-weight: 800; color: white; background: #147a4d; cursor: pointer; margin-top: 8px; }
+      button.alt { background: #5633d8; }
+      button.warn { background: #e5672f; }
+      pre { white-space: pre-wrap; background: #fffef8; border: 1px solid #dfd6c7; border-radius: 8px; padding: 8px; min-height: 54px; }
+    </style>
+  </head>
+  <body>
+    <strong>ARIA Video Capture</strong>
+    <p>Panel page ke andar run hota hai. Save D:\ARIA_SOCIAL_MEDIA\Videos mein hota hai.</p>
+    <button id="show">Show / inject panel</button>
+    <button id="save" class="alt">Download current + save/upload</button>
+    <button id="record" class="alt">Record/download current player</button>
+    <button id="queue" class="warn">Download all visible one by one</button>
+    <pre id="out">Ready.</pre>
+    <script src="popup.js"></script>
+  </body>
+</html>

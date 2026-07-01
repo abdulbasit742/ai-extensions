@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ARIA PULSE V48</title>
+  <link rel="stylesheet" href="ui/styles.css">
+</head>
+<body>
+  <div class="pulse-bg"></div>
+  <div id="app">
+    <div id="pulse" class="tab-content active">
+      <h1 style="font-family:'Orbitron'; letter-spacing:25px; color:var(--pulse); text-shadow: 0 0 80px var(--pulse);">PULSE-POST</h1>
+      <div class="card">
+        <div class="card-label">Direct Comment Input</div>
+        <textarea id="directComment" placeholder="Type your comment to post instantly..."></textarea>
+        <button id="btnPulsePost">Pulse Post Now</button>
+      </div>
+      <div class="card">
+        <div class="card-label">Pulse Status</div>
+        <div class="pulse-status">
+          <div class="status-indicator"></div>
+          <span id="pulseStatus">System Ready for Injection</span>
+        </div>
+      </div>
+    </div>
+    <div id="bridge" class="tab-content">
+      <h1 style="font-family:'Orbitron';">BRIDGE</h1>
+      <div class="card">
+        <div class="card-label">Social Bridge Settings</div>
+        <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:45px;">
+          <span>Instant Injection Mode</span>
+          <input type="checkbox" id="instantToggle" checked>
+        </div>
+        <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:45px;">
+          <span>Auto-Scroll to Comments</span>
+          <input type="checkbox" id="scrollToggle" checked>
+        </div>
+        <p style="font-size:18px; color:#a1a1aa;">Pulse-Post bypasses standard loops for immediate social interaction.</p>
+      </div>
+    </div>
+    <div id="config" class="tab-content">
+      <h1 style="font-family:'Orbitron';">CORE</h1>
+      <button id="btnPulseReset">Reset Pulse Bridge</button>
+    </div>
+  </div>
+  <script type="module" src="popup.js"></script>
+</body>
+</html>

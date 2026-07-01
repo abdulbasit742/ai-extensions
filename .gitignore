@@ -1,0 +1,44 @@
+# Local secrets
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+secrets/
+credentials/
+**/*accounts*.txt
+**/api_keys.json
+**/settings.json
+**/social_accounts.json
+
+# Runtime/browser auth
+**/.wa-auth/
+**/session-default/
+**/.cloudflare-tunnel-token
+**/cloudflare-token*.txt
+
+# Dependencies and builds
+node_modules/
+.venv/
+venv/
+__pycache__/
+dist/
+build/
+.next/
+.cache/
+
+# Logs and generated archives
+*.log
+*.zip
+*.rar
+*.7z
+*.crx
+
+# OS/editor
+Thumbs.db
+Desktop.ini
+.DS_Store
+.vscode/
+.idea/

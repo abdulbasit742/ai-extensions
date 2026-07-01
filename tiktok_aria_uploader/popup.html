@@ -1,0 +1,27 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>ARIA TikTok Uploader</title>
+  <style>
+    body { width: 320px; margin: 0; padding: 14px; background: #0f172a; color: #f8fafc; font: 14px/1.4 system-ui, -apple-system, Segoe UI, sans-serif; }
+    h1 { font-size: 18px; margin: 0 0 8px; color: #67e8f9; }
+    p { margin: 0 0 12px; color: #cbd5e1; }
+    button { width: 100%; border: 0; border-radius: 9px; padding: 10px; margin: 5px 0; color: #fff; background: #0f766e; font-weight: 800; cursor: pointer; }
+    button.warn { background: #ef4444; }
+    button.light { background: #334155; }
+    .status { margin-top: 10px; padding: 10px; border-radius: 8px; border: 1px solid rgba(255,255,255,.14); background: rgba(255,255,255,.06); white-space: pre-wrap; min-height: 46px; }
+  </style>
+</head>
+<body>
+  <h1>ARIA TikTok Uploader</h1>
+  <p>Safe mode: upload/caption guide. Final Post aap khud confirm karte hain.</p>
+  <button id="show">Show panel</button>
+  <button id="run">Run helper</button>
+  <button id="stop" class="warn">Stop</button>
+  <button id="upload" class="light">Click upload box</button>
+  <button id="caption" class="light">Fill caption</button>
+  <div id="status" class="status">Open TikTok upload page first.</div>
+  <script src="popup.js"></script>
+</body>
+</html>

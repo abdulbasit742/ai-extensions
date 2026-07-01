@@ -1,0 +1,124 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>ARIA ClickUp Sender</title>
+  <style>
+    :root { color-scheme: light; }
+    body {
+      width: 360px;
+      margin: 0;
+      padding: 14px;
+      font-family: system-ui, -apple-system, Segoe UI, sans-serif;
+      color: #172018;
+      background: #fffaf2;
+    }
+    h1 { margin: 0 0 6px; font-size: 18px; }
+    p { margin: 0 0 10px; color: #5f665f; font-size: 12px; line-height: 1.4; }
+    label { display: block; margin: 10px 0 5px; font-size: 12px; font-weight: 800; }
+    input, select {
+      width: 100%;
+      box-sizing: border-box;
+      border: 1px solid #d7d1c7;
+      border-radius: 8px;
+      padding: 9px 10px;
+      font: inherit;
+      background: #fff;
+    }
+    .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 12px; }
+    .row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+    .chips { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 7px; }
+    .chip {
+      padding: 5px 8px;
+      border: 1px solid #d7d1c7;
+      border-radius: 999px;
+      background: #fff;
+      color: #172018;
+      font-size: 12px;
+      cursor: pointer;
+      font-weight: 800;
+    }
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      border-radius: 999px;
+      padding: 4px 8px;
+      font-size: 11px;
+      font-weight: 800;
+      background: #e7f6ed;
+      color: #14532d;
+      border: 1px solid #c9ead5;
+      margin-bottom: 8px;
+    }
+    button {
+      border: 0;
+      border-radius: 8px;
+      padding: 10px 12px;
+      font: inherit;
+      font-weight: 800;
+      cursor: pointer;
+      color: #fff;
+      background: #16764a;
+    }
+    button.secondary { background: #ef8e4f; color: #211b14; }
+    button.warn { background: #c8523c; }
+    button.ghost { background: #fff; color: #172018; border: 1px solid #d7d1c7; }
+    #status {
+      margin-top: 12px;
+      white-space: pre-wrap;
+      font-size: 12px;
+      line-height: 1.45;
+      border: 1px solid #e7dfd1;
+      border-radius: 10px;
+      padding: 10px;
+      min-height: 58px;
+      background: #fff;
+    }
+  </style>
+</head>
+<body>
+  <h1>ARIA ClickUp Sender Pro</h1>
+  <div class="badge">Safe in-page automation</div>
+  <p>ClickUp tab ke andar hi run hota hai. Response complete hone ke baad next number send karega: 1, 2, 3...</p>
+  <label for="server">ARIA server URL</label>
+  <input id="server" type="text" value="http://127.0.0.1:5050">
+  <label for="interval">Minimum wait seconds</label>
+  <input id="interval" type="number" min="1" step="1" value="5">
+  <div class="chips">
+    <button class="chip" data-seconds="4">4s</button>
+    <button class="chip" data-seconds="5">5s</button>
+    <button class="chip" data-seconds="8">8s</button>
+    <button class="chip" data-seconds="15">15s</button>
+    <button class="chip" data-seconds="30">30s</button>
+    <button class="chip" data-seconds="45">45s</button>
+    <button class="chip" data-seconds="60">60s</button>
+    <button class="chip" data-seconds="90">90s</button>
+  </div>
+  <div class="row">
+    <div>
+      <label for="sendMode">Send mode</label>
+      <select id="sendMode">
+        <option value="number">Numbers: 1,2,3...</option>
+        <option value="dot">Dot: .</option>
+        <option value="custom">Custom text</option>
+      </select>
+    </div>
+    <div>
+      <label for="nextNumber">Next number</label>
+      <input id="nextNumber" type="number" min="1" step="1" value="1">
+    </div>
+  </div>
+  <label for="customText">Custom text</label>
+  <input id="customText" type="text" value=".">
+  <div class="grid">
+    <button id="start">Run This Tab</button>
+    <button id="stop" class="warn">Stop</button>
+    <button id="refresh" class="ghost">Status</button>
+    <button id="dashboard" class="secondary">Dashboard</button>
+    <button id="save" class="ghost">Save Settings</button>
+    <button id="reset" class="ghost">Reset Counter</button>
+  </div>
+  <div id="status">Loading...</div>
+  <script src="popup.js"></script>
+</body>
+</html>

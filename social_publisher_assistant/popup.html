@@ -1,0 +1,94 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>ARIA Social Publisher</title>
+  <style>
+    body {
+      margin: 0;
+      width: 350px;
+      color: #172019;
+      background: #fffaf0;
+      font: 13px/1.45 system-ui, -apple-system, Segoe UI, sans-serif;
+    }
+    main { padding: 14px; }
+    h1 { margin: 0 0 8px; font-size: 18px; }
+    label { display: block; margin-top: 10px; font-weight: 800; }
+    input, select, textarea {
+      width: 100%;
+      box-sizing: border-box;
+      margin-top: 5px;
+      padding: 9px;
+      border: 1px solid #d8d1c4;
+      border-radius: 9px;
+      background: #fffef8;
+      color: #172019;
+      font: inherit;
+    }
+    textarea { min-height: 64px; resize: vertical; }
+    button {
+      border: 0;
+      border-radius: 9px;
+      padding: 9px 10px;
+      font: inherit;
+      font-weight: 800;
+      cursor: pointer;
+      background: #197744;
+      color: white;
+    }
+    button.secondary { background: #ed8b45; color: #172019; }
+    button.ghost { background: #fff8ec; color: #172019; border: 1px solid #d8d1c4; }
+    .actions { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 12px; }
+    .status {
+      margin-top: 12px;
+      min-height: 90px;
+      padding: 10px;
+      white-space: pre-wrap;
+      border: 1px solid #e3dacb;
+      border-radius: 9px;
+      background: #fffef8;
+    }
+    .hint { margin-top: 8px; color: #6b6358; font-size: 12px; }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>ARIA Social Publisher</h1>
+    <div class="hint">One-click helper for your own Facebook, Instagram, LinkedIn, and X posts. Public engagement actions stay under your click.</div>
+    <label>Server URL</label>
+    <input id="server" value="http://127.0.0.1:5050" />
+    <label>Groq API key</label>
+    <input id="groqKey" type="password" placeholder="gsk_... saved locally in ARIA server" />
+    <label>Platform</label>
+    <select id="platform">
+      <option value="facebook">Facebook</option>
+      <option value="instagram">Instagram</option>
+      <option value="linkedin">LinkedIn</option>
+      <option value="x">X / Twitter</option>
+    </select>
+    <label>Tone</label>
+    <input id="tone" value="friendly" />
+    <label>Extra caption instruction</label>
+    <textarea id="extra" placeholder="e.g. short viral caption, Pakistani audience, add CTA"></textarea>
+    <div class="actions">
+      <button id="prepare">Prepare draft</button>
+      <button id="saveKey" class="ghost">Save Groq key</button>
+      <button id="fill" class="ghost">Fill caption</button>
+      <button id="upload" class="secondary">Auto upload</button>
+      <button id="campaign" class="secondary">Fill campaign draft</button>
+      <button id="autopost" class="secondary">Auto Post</button>
+      <button id="comment" class="ghost">Fill comment draft</button>
+      <button id="highlight" class="ghost">Highlight actions</button>
+      <button id="folder" class="ghost">Open image folder</button>
+      <button id="sheet" class="ghost">Open sheet CSV</button>
+      <button id="fb" class="secondary">Open FB</button>
+      <button id="ig" class="secondary">Open IG</button>
+      <button id="li" class="secondary">Open LinkedIn</button>
+      <button id="xopen" class="secondary">Open X</button>
+      <button id="status" class="ghost">Status</button>
+    </div>
+    <div id="out" class="status">Ready.</div>
+  </main>
+  <script src="popup.js"></script>
+</body>
+</html>

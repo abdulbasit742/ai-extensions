@@ -1,0 +1,95 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>ARIA X Giveaway Assistant</title>
+  <style>
+    body {
+      width: 300px;
+      max-height: 560px;
+      overflow: auto;
+      margin: 0;
+      padding: 14px;
+      font: 13px/1.45 "Segoe UI", Arial, sans-serif;
+      color: #172018;
+      background: #fbf8ef;
+    }
+    h1 {
+      margin: 0 0 8px;
+      font-size: 17px;
+    }
+    p {
+      margin: 0 0 10px;
+      color: #5f665d;
+    }
+    button {
+      width: 100%;
+      border: 1px solid #d8d2c2;
+      background: #fffdf7;
+      border-radius: 8px;
+      padding: 9px 10px;
+      margin: 5px 0;
+      color: #172018;
+      font-weight: 700;
+      cursor: pointer;
+    }
+    textarea,
+    input {
+      width: 100%;
+      box-sizing: border-box;
+      border: 1px solid #d8d2c2;
+      background: #fffdf7;
+      border-radius: 8px;
+      padding: 8px 9px;
+      margin: 5px 0;
+      color: #172018;
+      font: inherit;
+      outline: none;
+    }
+    textarea {
+      min-height: 58px;
+      resize: vertical;
+    }
+    button.primary {
+      background: #167a48;
+      color: white;
+      border-color: #167a48;
+    }
+    button.warn {
+      background: #ef8b4a;
+      border-color: #ef8b4a;
+    }
+    #status {
+      margin-top: 10px;
+      padding: 9px;
+      border-radius: 8px;
+      background: #fff7ed;
+      border: 1px solid #ead8c5;
+      white-space: pre-wrap;
+      color: #49372b;
+    }
+  </style>
+</head>
+<body>
+  <h1>ARIA X Assistant</h1>
+  <p>This browser popup cannot move. Use the floating page panel for bottom-right controls.</p>
+  <button class="primary" data-command="reset-panel">Show bottom floating panel</button>
+  <textarea id="approvedFriends" placeholder="Approved friends to tag only: @friend1, @friend2"></textarea>
+  <button data-save-friends="1">Save approved tag list</button>
+  <button class="primary" data-command="best-run">Best safe run</button>
+  <button class="primary" data-command="next-action">Next action</button>
+  <button data-command="mark-done">Mark highlighted done</button>
+  <button class="primary" data-command="prepare">Smart prepare current post</button>
+  <button class="primary" data-command="analyze">Analyze visible giveaway</button>
+  <button data-command="highlight">Highlight actions + Follow</button>
+  <button class="primary" data-command="guide-like">Guide Like</button>
+  <button class="primary" data-command="guide-repost">Guide Repost</button>
+  <button data-command="profiles">Open follow profiles</button>
+  <button data-command="copy">Copy comment draft</button>
+  <button class="warn" data-command="draft">Fill reply draft</button>
+  <button class="warn" data-command="profile-post">Fill profile post draft</button>
+  <button class="warn" data-command="reset-panel">Reset bottom panel</button>
+  <div id="status">Open an X post, then click Analyze.</div>
+  <script src="popup.js"></script>
+</body>
+</html>

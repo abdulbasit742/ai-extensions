@@ -1,0 +1,61 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>ARIA GPT to Word</title>
+  <style>
+    body { width: 360px; margin: 0; padding: 14px; font-family: system-ui, Segoe UI, sans-serif; background: #fbfaf4; color: #182216; }
+    h1 { font-size: 18px; margin: 0 0 6px; }
+    p { color: #6b665a; font-size: 12px; line-height: 1.35; margin: 0 0 10px; }
+    label { display: block; font-weight: 800; font-size: 12px; margin: 10px 0 5px; }
+    input, select { width: 100%; box-sizing: border-box; border: 1px solid #ded6c6; border-radius: 8px; padding: 9px; font: inherit; background: white; }
+    .row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+    .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 12px; }
+    button { border: 0; border-radius: 8px; padding: 10px; font: inherit; font-weight: 900; cursor: pointer; background: #13784d; color: white; }
+    button.warn { background: #c8523c; }
+    button.ghost { background: white; color: #182216; border: 1px solid #ded6c6; }
+    #status { white-space: pre-wrap; margin-top: 12px; min-height: 70px; padding: 10px; border-radius: 10px; background: white; border: 1px solid #ded6c6; font-size: 12px; line-height: 1.4; }
+  </style>
+</head>
+<body>
+  <h1>ARIA GPT to Word</h1>
+  <p>Number send karo, ChatGPT response/code Word document mein save karo, phir next number automatically bhejo.</p>
+  <label for="server">ARIA server</label>
+  <input id="server" value="http://127.0.0.1:5050">
+  <div class="row">
+    <div>
+      <label for="startNumber">Start number</label>
+      <input id="startNumber" type="number" min="1" value="1">
+    </div>
+    <div>
+      <label for="endNumber">End number</label>
+      <input id="endNumber" type="number" min="1" value="50">
+    </div>
+  </div>
+  <div class="row">
+    <div>
+      <label for="interval">Wait seconds</label>
+      <input id="interval" type="number" min="2" value="8">
+    </div>
+    <div>
+      <label for="saveMode">Save mode</label>
+      <select id="saveMode">
+        <option value="code">Code blocks first</option>
+        <option value="full">Full response + code</option>
+      </select>
+    </div>
+  </div>
+  <label for="prefix">Optional prompt prefix</label>
+  <input id="prefix" placeholder="e.g. Continue with file number">
+  <div class="grid">
+    <button id="run">Run This Tab</button>
+    <button id="stop" class="warn">Stop</button>
+    <button id="saveLatest" class="ghost">Save Latest</button>
+    <button id="openWord" class="ghost">Open Word</button>
+    <button id="openFolder" class="ghost">Open Folder</button>
+    <button id="statusBtn" class="ghost">Status</button>
+  </div>
+  <div id="status">Loading...</div>
+  <script src="popup.js"></script>
+</body>
+</html>

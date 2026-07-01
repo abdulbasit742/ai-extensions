@@ -1,0 +1,110 @@
+/* [ARIA] V48 PULSE-POST & SOCIAL-BRIDGE - Styles */
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Space+Grotesk:wght@300;500;700&display=swap');
+
+:root {
+  --pulse: #ef4444;
+  --bridge: #10b981;
+  --bg: #050505;
+  --glass: rgba(10, 10, 12, 0.98);
+  --text: #ffffff;
+}
+
+body {
+  width: 900px;
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Space Grotesk', sans-serif;
+  padding: 60px;
+  overflow-x: hidden;
+}
+
+.pulse-bg {
+  position: fixed;
+  top: 0; left: 0; width: 100%; height: 100%;
+  background: radial-gradient(circle at center, rgba(239, 68, 68, 0.05), transparent 60%);
+  z-index: -1;
+}
+
+.card {
+  background: var(--glass);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  border-radius: 60px;
+  padding: 65px;
+  margin-top: 55px;
+  backdrop-filter: blur(80px);
+  box-shadow: 0 100px 250px rgba(0,0,0,1);
+}
+
+.card-label {
+  font-size: 26px;
+  color: var(--pulse);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 20px;
+  margin-bottom: 55px;
+}
+
+textarea {
+  width: 100%;
+  background: rgba(255, 255, 255, 0.02);
+  color: #fff;
+  border: 1px solid rgba(239, 68, 68, 0.2);
+  border-radius: 45px;
+  padding: 55px;
+  font-size: 24px;
+  outline: none;
+  transition: 1.5s;
+}
+
+textarea:focus {
+  border-color: var(--bridge);
+  box-shadow: 0 0 150px rgba(16, 185, 129, 0.2);
+}
+
+button {
+  width: 100%;
+  padding: 45px;
+  background: linear-gradient(90deg, var(--pulse), var(--bridge));
+  color: #fff;
+  border: none;
+  border-radius: 45px;
+  margin-top: 50px;
+  cursor: pointer;
+  font-family: 'Orbitron', sans-serif;
+  font-weight: 700;
+  letter-spacing: 25px;
+  text-transform: uppercase;
+  transition: 2s;
+}
+
+button:hover {
+  transform: translateY(-20px) scale(1.08);
+  box-shadow: 0 80px 220px rgba(239, 68, 68, 1);
+}
+
+.pulse-status {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 30px;
+  background: rgba(255,255,255,0.01);
+  border-radius: 35px;
+  margin-top: 30px;
+  border: 1px solid rgba(255,255,255,0.03);
+}
+
+.status-indicator {
+  width: 15px; height: 15px;
+  border-radius: 50%;
+  background: var(--pulse);
+  box-shadow: 0 0 20px var(--pulse);
+  animation: pulse-ring 1.5s infinite;
+}
+
+@keyframes pulse-ring {
+  0% { transform: scale(0.8); opacity: 1; }
+  100% { transform: scale(2.5); opacity: 0; }
+}
+
+.tab-content { display: none; }
+.tab-content.active { display: block; }

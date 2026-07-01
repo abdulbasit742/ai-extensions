@@ -1,0 +1,27 @@
+{
+  "manifest_version": 3,
+  "name": "ARIA ChatGPT to Word Copier",
+  "version": "1.0.0",
+  "description": "Send numbered prompts in ChatGPT, capture code/response, and append it into a local MS Word document through ARIA.",
+  "permissions": ["storage", "activeTab", "tabs", "alarms"],
+  "action": {
+    "default_title": "ARIA GPT to Word",
+    "default_popup": "popup.html"
+  },
+  "host_permissions": [
+    "https://chatgpt.com/*",
+    "https://chat.openai.com/*",
+    "http://127.0.0.1/*",
+    "http://localhost/*"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://chatgpt.com/*", "https://chat.openai.com/*"],
+      "js": ["content.js"],
+      "run_at": "document_idle"
+    }
+  ]
+}
