@@ -69,6 +69,13 @@ test('reviewed risk passes and remains visible', () => {
   assert.equal(result.findings[0].code, 'approved-risk');
 });
 
+test('review date remains valid through that UTC calendar day', () => {
+  const { root } = workspace({ ...safeManifest, permissions: ['storage', 'clipboardRead'] });
+  const result = auditRepository(root, approval(['clipboard-read'], '2026-07-15'), { today: new Date('2026-07-15T23:59:59Z') });
+  assert.equal(result.summary.high, 0);
+  assert.equal(result.summary.approved, 1);
+});
+
 test('expired exception fails closed', () => {
   const { root } = workspace({ ...safeManifest, permissions: ['storage', 'clipboardRead'] });
   const result = auditRepository(root, approval(['clipboard-read'], '2026-07-14'), { today: new Date('2026-07-15T00:00:00Z') });
