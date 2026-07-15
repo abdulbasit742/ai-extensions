@@ -14,8 +14,7 @@
     "https://x.com/*",
     "https://twitter.com/*",
     "http://127.0.0.1/*",
-    "http://localhost/*",
-    "http://*/*"
+    "http://localhost/*"
   ],
   "action": {
     "default_title": "ARIA Social Publisher",
