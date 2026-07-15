@@ -40,7 +40,8 @@ function approvalStatus(entry, riskId, today) {
   if (typeof entry.review_by !== 'string' || !/^\d{4}-\d{2}-\d{2}$/.test(entry.review_by)) return { approved: false, reason: 'review_by must use YYYY-MM-DD' };
   const reviewDate = new Date(`${entry.review_by}T00:00:00Z`);
   if (Number.isNaN(reviewDate.getTime())) return { approved: false, reason: 'review_by is invalid' };
-  if (reviewDate < today) return { approved: false, reason: `approval expired on ${entry.review_by}` };
+  const todayKey = today.toISOString().slice(0, 10);
+  if (entry.review_by < todayKey) return { approved: false, reason: `approval expired on ${entry.review_by}` };
   return { approved: true };
 }
 
