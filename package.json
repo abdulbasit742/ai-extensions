@@ -1,0 +1,14 @@
+{
+  "name": "aria-ai-extensions",
+  "version": "4.28.1",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "test": "node --test tests/*.test.mjs",
+    "audit:manifests": "node scripts/audit-manifests.mjs",
+    "check": "node --check scripts/audit-manifests.mjs && node --check scripts/manifest-risks.mjs && node --test tests/*.test.mjs && node scripts/audit-manifests.mjs"
+  }
+}
