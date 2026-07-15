@@ -1,0 +1,26 @@
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  manifest-security:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [20, 22]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: npm
+      - run: npm ci --ignore-scripts
+      - run: npm run check
+      - run: node scripts/audit-manifests.mjs --format json --output /tmp/manifest-audit.json
+      - run: node -e "const r=require('/tmp/manifest-audit.json'); if(r.summary.manifests !== 11) throw new Error('Expected 11 extension manifests')"
