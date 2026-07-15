@@ -1,0 +1,107 @@
+{
+  "version": 1,
+  "manifests": {
+    "aria_super_extension/manifest.json": {
+      "owner": "ARIA extension maintainer",
+      "review_by": "2026-10-15",
+      "risks": {
+        "privileged-debugger": {
+          "reason": "Required only for explicit user-triggered native input fallback on the approved active tab."
+        },
+        "clipboard-read": {
+          "reason": "Supports an opt-in clipboard watch workflow controlled from the extension interface."
+        },
+        "unlimited-storage": {
+          "reason": "Stores user-created response archives and code vault data locally without silent eviction."
+        },
+        "broad-http-host": {
+          "reason": "The master universal automation mode supports user-selected HTTP sites and a localhost bridge."
+        },
+        "broad-https-host": {
+          "reason": "The master universal automation mode supports user-selected AI and productivity websites."
+        },
+        "file-host-access": {
+          "reason": "File page support is an explicit universal-sender feature and still requires browser file access approval."
+        },
+        "broad-http-content-script": {
+          "reason": "Universal automation is intentionally available on user-opened HTTP pages in the master extension."
+        },
+        "broad-https-content-script": {
+          "reason": "Universal automation is intentionally available on user-opened HTTPS pages in the master extension."
+        },
+        "file-content-script": {
+          "reason": "Universal automation can run on user-approved local file pages when Chrome file access is enabled."
+        }
+      }
+    },
+    "chatgpt_aria_sender/manifest.json": {
+      "owner": "ARIA extension maintainer",
+      "review_by": "2026-10-15",
+      "risks": {
+        "clipboard-read": {
+          "reason": "An explicit clipboard watch mode reads text only after the user enables that workflow."
+        }
+      }
+    },
+    "chatgpt_image_saver/manifest.json": {
+      "owner": "ARIA extension maintainer",
+      "review_by": "2026-10-15",
+      "risks": {
+        "broad-https-host": {
+          "reason": "Generated image assets may be served from changing HTTPS CDN origins before user-requested download."
+        }
+      }
+    },
+    "social_publisher_assistant/manifest.json": {
+      "owner": "ARIA extension maintainer",
+      "review_by": "2026-10-15",
+      "risks": {
+        "clipboard-read": {
+          "reason": "User-triggered caption and draft import can read clipboard text into the visible assistant panel."
+        }
+      }
+    },
+    "universal_aria_sender/manifest.json": {
+      "owner": "ARIA extension maintainer",
+      "review_by": "2026-10-15",
+      "risks": {
+        "broad-http-host": {
+          "reason": "This helper is explicitly the universal sender for user-selected HTTP websites."
+        },
+        "broad-https-host": {
+          "reason": "This helper is explicitly the universal sender for user-selected HTTPS websites."
+        },
+        "file-host-access": {
+          "reason": "This helper supports local file pages after the user enables Chrome file URL access."
+        },
+        "broad-http-content-script": {
+          "reason": "The universal sender must observe the user-selected composer on arbitrary HTTP pages."
+        },
+        "broad-https-content-script": {
+          "reason": "The universal sender must observe the user-selected composer on arbitrary HTTPS pages."
+        },
+        "file-content-script": {
+          "reason": "The universal sender supports user-approved local file pages as a documented feature."
+        }
+      }
+    },
+    "video_capture_assistant/manifest.json": {
+      "owner": "ARIA extension maintainer",
+      "review_by": "2026-10-15",
+      "risks": {
+        "broad-http-host": {
+          "reason": "The capture helper detects user-owned direct video URLs across arbitrary HTTP pages."
+        },
+        "broad-https-host": {
+          "reason": "The capture helper detects user-owned direct video URLs across arbitrary HTTPS pages."
+        },
+        "broad-http-content-script": {
+          "reason": "The visible helper panel detects direct user-owned video elements on HTTP pages."
+        },
+        "broad-https-content-script": {
+          "reason": "The visible helper panel detects direct user-owned video elements on HTTPS pages."
+        }
+      }
+    }
+  }
+}
